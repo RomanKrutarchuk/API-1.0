@@ -2,13 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import config from "./config.js";
 import modules from "./models.js";
+import cors from "cors";
 
 const app = express();
 const Comments = modules.Comments;
 
-app.listen(config.PORT, () => {
-  console.log(`Server has been startted on ${config.PORT}...`);
-});
+app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(config.DBURL)
@@ -28,7 +28,25 @@ app.get("/comments", (req, res) => {
   //   })
   Comments.find()
     .then((comments) => {
-      res.send(comments);
+      res.setHeader("Content-Type", "application/json");
+      res.json(comments);
+      res.end();
     })
     .catch((error) => res.send(error));
+});
+app.post("/comments", (req, res) => {
+  Comments.create({
+    name: req.body.name,
+    email: req.body.email,
+    text: req.body.text,
+  })
+    .then(() => {
+      console.log(
+        `A new comment has been added to DB [${req.body.name},${req.body.email},${req.body.text}]`
+      );
+    })
+    .catch((error) => res.send(error));
+});
+app.listen(config.PORT, () => {
+  console.log(`Server has been startted on ${config.PORT}...`);
 });
