@@ -19,7 +19,7 @@ mongoose
     console.log("connection to db error-", error);
   });
 
-app.get("/usersCreate", (req, res) => {
+app.post("/users/userCreate", (req, res) => {
   Users.create({
     name: req.body.name,
     email: req.body.email,
@@ -32,13 +32,13 @@ app.get("/usersCreate", (req, res) => {
   });
 });
 
-app
-  .get("/users", (req, res) => {
-    Users.find().then((users) => {
+app.get("/users", (req, res) => {
+  Users.find()
+    .then((users) => {
       res.send(users);
-    });
-  })
-  .catch((error) => res.send(error));
+    })
+    .catch((error) => res.send(error));
+});
 
 // app.get("/comments", (req, res) => {
 //Comments.create({name email text}) for create a new comments in db
