@@ -32,10 +32,30 @@ app.post("/users/userCreate", (req, res) => {
   });
 });
 
-app.get("/users", (req, res) => {
-  Users.find()
+app.post("/users", (req, res) => {
+  Users.find({
+    name: req.body.name,
+    email: req.body.email,
+  })
     .then((users) => {
-      res.send(users);
+      //users is an array
+      const user = users.find((user) => user.name === req.body.name);
+
+      const RequestPassword = req.body.password;
+      // console.log("this user", user, RequestPassword);
+      if (RequestPassword === user.password) {
+        const response = {
+          status: "authorized",
+          user: {
+            name: user.name,
+            email: user.email,
+          },
+        };
+        res.send(response);
+      } else if (RequestPassword != user.password) {
+        const response = { status: "invalid passoword" };
+        res.send(response);
+      }
     })
     .catch((error) => res.send(error));
 });
