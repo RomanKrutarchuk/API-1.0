@@ -84,35 +84,6 @@ app.post("/comments/create", (req, res) => {
   // console.log("new comment");
 });
 
-// app.get("/comments", (req, res) => {
-//Comments.create({name email text}) for create a new comments in db
-//   Comments.create({
-//     name: "Misha",
-//     email: "Misha@mail.com",
-//     text: "dayte mne mjod"
-//   })
-// Comments.find()
-//   .then((comments) => {
-//     res.setHeader("Content-Type", "application/json");
-//     res.json(comments);
-//     res.end();
-//   })
-//   .catch((error) => res.send(error));
-// });
-// app.post("/comments", (req, res) => {
-//   Comments.create({
-//     name: req.body.name,
-//     email: req.body.email,
-//     text: req.body.text,
-//   })
-//     .then(() => {
-//       console.log(
-//         `A new comment has been added to DB [${req.body.name},${req.body.email},${req.body.text}]`
-//       );
-//     })
-//     .catch((error) => res.send(error));
-// });
-
 app.listen(config.PORT, () => {
   console.log(`Server has been startted on ${config.PORT}...`);
 });
