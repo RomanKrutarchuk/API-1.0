@@ -1,5 +1,4 @@
 {
-  "buildCommand": "build",
   "version": 2,
   "builds": [
     {
