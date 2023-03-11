@@ -1,4 +1,5 @@
 {
+    "buildCommand": "build",
     "version": 2,
     "build": {
         "src": "index.js",
