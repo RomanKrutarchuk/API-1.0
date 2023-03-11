@@ -5,8 +5,8 @@ import modules from "./models.js";
 import cors from "cors";
 
 const app = express();
-// const Comments = modules.Comments;
-// const Users = modules.Users;
+const Comments = modules.Comments;
+const Users = modules.Users;
 app.use(express.json());
 app.use(cors());
 
@@ -112,6 +112,7 @@ app.post("/comments/create", (req, res) => {
 //     })
 //     .catch((error) => res.send(error));
 // });
+
 app.listen(config.PORT, () => {
   console.log(`Server has been startted on ${config.PORT}...`);
 });
