@@ -1,4 +1,3 @@
-
 import express from "express";
 import mongoose from "mongoose";
 import config from "./config.js";
@@ -11,6 +10,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("hello vercel");
+});
 mongoose
   .connect(config.DBURL)
   .then((res) => {
@@ -78,9 +80,7 @@ app.post("/comments/create", (req, res) => {
     author: req.body.author.name,
     authoremail: req.body.author.email,
     text: req.body.text,
-  }).then(res.send(
-   {response: "your comment went to db"}
-  ));
+  }).then(res.send({ response: "your comment went to db" }));
   // console.log("new comment");
 });
 
@@ -117,5 +117,5 @@ app.listen(config.PORT, () => {
 });
 
 export default {
-  app
-}
+  app,
+};
