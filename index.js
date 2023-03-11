@@ -1,3 +1,4 @@
+
 import express from "express";
 import mongoose from "mongoose";
 import config from "./config.js";
@@ -5,7 +6,7 @@ import modules from "./models.js";
 import cors from "cors";
 
 const app = express();
-// const Comments = modules.Comments;
+const Comments = modules.Comments;
 const Users = modules.Users;
 app.use(express.json());
 app.use(cors());
@@ -58,6 +59,29 @@ app.post("/users", (req, res) => {
       }
     })
     .catch((error) => res.send(error));
+});
+
+app.get("/users", (req, res) => {
+  Users.find().then((users) => {
+    res.send(users);
+  });
+});
+
+app.get("/comments", (req, res) => {
+  Comments.find().then((comments) => {
+    res.send(comments);
+  });
+});
+
+app.post("/comments/create", (req, res) => {
+  Comments.create({
+    author: req.body.author.name,
+    authoremail: req.body.author.email,
+    text: req.body.text,
+  }).then(res.send(
+   {response: "your comment went to db"}
+  ));
+  // console.log("new comment");
 });
 
 // app.get("/comments", (req, res) => {

@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const commentsSchema = new mongoose.Schema({
-  name: { type: String },
-  email: { type: String },
-  text: { type: String },
+  author: { type: String, require: true },
+  authorEmail: { type: String, require: true },
+  text: { type: String, require: true },
 });
 const usersSchema = new mongoose.Schema({
   name: {
