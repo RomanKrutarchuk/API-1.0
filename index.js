@@ -22,22 +22,23 @@ mongoose
     console.log("connection to db error-", error);
   });
 
-app.post("/users/userCreate", (req, res) => {
+app.post("/users/create", (req, res) => {
   Users.create({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-  });
-  console.log("new user created", {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-  });
+  })
+  .then(res.send({ response: "succefull user create" }));
+  // console.log("new user created", {
+  //   name: req.body.name,
+  //   email: req.body.email,
+  //   password: req.body.password,
+  // });
 });
 
-app.get("/users/userCreate" ,(req, res)=>{
-  res.send("user create page")
-})
+app.get("/users/create", (req, res) => {
+  res.send("user create page");
+});
 
 app.post("/users", (req, res) => {
   Users.find({
