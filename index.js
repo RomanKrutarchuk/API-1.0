@@ -35,6 +35,10 @@ app.post("/users/userCreate", (req, res) => {
   });
 });
 
+app.get("/users/userCreate" ,(req, res)=>{
+  res.send("user create page")
+})
+
 app.post("/users", (req, res) => {
   Users.find({
     name: req.body.name,
