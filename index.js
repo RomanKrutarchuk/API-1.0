@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://vercel-pfc-repository-web.vercel.app",
+    origin: "https://vercel-pfc-repository-web.vercel.app/comments",
     methods: ["GET", "POST"],
   },
 });
