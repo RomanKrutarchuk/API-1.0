@@ -6,13 +6,17 @@ import config from "./config.js";
 import modules from "./models.js";
 import cors from "cors";
 import { v4 as uuid } from "uuid";
-
+const api_url =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8080"
+    : "https://vercel-pfc-repository-web.vercel.app";
 // const clients = {};
+// console.log("url",api_url)
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:8080",
+    origin: api_url,
     methods: ["GET", "POST"],
   },
 });
@@ -56,7 +60,7 @@ app.post("/users", (req, res) => {
     email: req.body.email,
   })
     .then((users) => {
-      console.log(users,"--------");
+      console.log(users, "--------");
       if (users.length === 0) {
         const response = {
           status: "user_not_defiened",
