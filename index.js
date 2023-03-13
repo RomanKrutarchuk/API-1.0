@@ -8,8 +8,20 @@ import cors from "cors";
 import { v4 as uuid } from "uuid";
 
 const app = express();
-const server = http.createServer(app,(req,res)=>{
-  res.setHeader('Access-Control-Allow-Origin', 'https://vercel-pfc-repository-web.vercel.app');
+const server = http.createServer(app, (req, res) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://vercel-pfc-repository-web.vercel.app"
+  );
+  res.setHeader(
+    "Access-Control-Request-Method",
+    "https://vercel-pfc-repository-web.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "https://vercel-pfc-repository-web.vercel.app"
+  );
 });
 const Comments = modules.Comments;
 const Users = modules.Users;
@@ -17,7 +29,10 @@ const Users = modules.Users;
 app.use(express.json());
 app.use(cors());
 
-const io = new Server(server, { cors: { origin: "https://vercel-pfc-repository-web.vercel.app" }, methods: ["GET", "POST"] });
+const io = new Server(server, {
+  cors: { origin: "https://vercel-pfc-repository-web.vercel.app" },
+  methods: ["GET", "POST"],
+});
 
 app.get("/", (req, res) => {
   res.send("hello vercel");
