@@ -17,6 +17,8 @@ const io = new Server(server, {
   cors: {
     origin: "https://vercel-pfc-repository-web.vercel.app/comments",
     methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
   },
 });
 app.get("/", (req, res) => {
