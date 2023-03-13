@@ -9,17 +9,16 @@ import { v4 as uuid } from "uuid";
 
 const app = express();
 const server = http.createServer(app);
+const Comments = modules.Comments;
+const Users = modules.Users;
+app.use(express.json());
+app.use(cors());
 const io = new Server(server, {
   cors: {
     origin: "https://vercel-pfc-repository-web.vercel.app/comments",
     methods: ["GET", "POST"],
   },
 });
-const Comments = modules.Comments;
-const Users = modules.Users;
-app.use(express.json());
-app.use(cors());
-
 app.get("/", (req, res) => {
   res.send("hello vercel");
 });
