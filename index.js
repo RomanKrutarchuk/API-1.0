@@ -118,38 +118,39 @@ app.get("/comments", (req, res) => {
 //   }).then(res.send({ response: "your comment went to db" }));
 // });
 
-io.on("connection", (socket) => {
-  //on connection
-  const id = uuid();
-  console.log(`new socket connection ${id}`);
-  const status = { web_socket_connection: true };
-  io.emit("connection_status", status);
-  //on disconnect
-  socket.on("disconnect", (reason) => {
-    console.log(`socket has leave ${id}`);
-  });
-  //send message at other sockets and write this on database
-  socket.on("socket send message", (data) => {
-    const comment = {
-      text: data.text,
-      author: data.author.name,
-      email: data.author.email,
-    };
-    Comments.create({
-      text: data.text,
-      author: data.author.name,
-      email: data.author.email,
-    }).then(
-      console.log(`socket ${id} send ${comment.text} and this went to DB`)
-    );
-    io.emit("socket send message", {
-      comment,
-    });
-  });
-});
+
 
 server.listen(config.PORT, () => {
   console.log(`Server has been startted on ${config.PORT}...`);
+  io.on("connection", (socket) => {
+    //on connection
+    const id = uuid();
+    console.log(`new socket connection ${id}`);
+    const status = { web_socket_connection: true };
+    io.emit("connection_status", status);
+    //on disconnect
+    socket.on("disconnect", (reason) => {
+      console.log(`socket has leave ${id}`);
+    });
+    //send message at other sockets and write this on database
+    socket.on("socket send message", (data) => {
+      const comment = {
+        text: data.text,
+        author: data.author.name,
+        email: data.author.email,
+      };
+      Comments.create({
+        text: data.text,
+        author: data.author.name,
+        email: data.author.email,
+      }).then(
+        console.log(`socket ${id} send ${comment.text} and this went to DB`)
+      );
+      io.emit("socket send message", {
+        comment,
+      });
+    });
+  });
 });
 
 export default {
