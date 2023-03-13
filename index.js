@@ -15,12 +15,12 @@ const server = http.createServer(app, (req, res) => {
   );
   res.setHeader(
     "Access-Control-Request-Method",
-    "https://vercel-pfc-repository-web.vercel.app"
+    "*"
   );
   res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "https://vercel-pfc-repository-web.vercel.app"
+    "*"
   );
   if (req.method === "OPTIONS" || req.method === "GET") {
     res.writeHead(200);
