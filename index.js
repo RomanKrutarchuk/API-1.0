@@ -16,11 +16,15 @@ app.use(express.json());
 app.use(cors());
 
 const io = new Server(server, {
-  origins: '*:*',
-  // cors: {
-  //   origin: "https://vercel-pfc-repository-web.vercel.app/comments",
-  //   methods: ["GET", "POST"],
-  // },
+  handlePreflightRequest: (req, res) => {
+    const headers = {
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Origin": req.headers.origin, //or the specific origin you want to give access to,
+      "Access-Control-Allow-Credentials": true,
+    };
+    res.writeHead(200, headers);
+    res.end();
+  },
 });
 
 app.get("/", (req, res) => {
@@ -137,7 +141,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(config.PORT,() => {
+server.listen(config.PORT, () => {
   console.log(`Server has been startted on ${config.PORT}...`);
 });
 
