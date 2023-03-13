@@ -16,10 +16,11 @@ app.use(express.json());
 app.use(cors());
 
 const io = new Server(server, {
-  cors: {
-    origin: "https://vercel-pfc-repository-web.vercel.app/comments",
-    methods: ["GET", "POST"],
-  },
+  origins: '*:*',
+  // cors: {
+  //   origin: "https://vercel-pfc-repository-web.vercel.app/comments",
+  //   methods: ["GET", "POST"],
+  // },
 });
 
 app.get("/", (req, res) => {
@@ -136,7 +137,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(config.PORT,"https://vercel-pfc-repository-api.vercel.app/", () => {
+server.listen(config.PORT,() => {
   console.log(`Server has been startted on ${config.PORT}...`);
 });
 
