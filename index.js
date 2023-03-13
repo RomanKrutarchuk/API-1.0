@@ -11,6 +11,7 @@ const app = express();
 const server = http.createServer(app);
 const Comments = modules.Comments;
 const Users = modules.Users;
+
 app.use(express.json());
 app.use(cors());
 
@@ -18,10 +19,9 @@ const io = new Server(server, {
   cors: {
     origin: "https://vercel-pfc-repository-web.vercel.app/comments",
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
   },
 });
+
 app.get("/", (req, res) => {
   res.send("hello vercel");
 });
@@ -136,7 +136,7 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(config.PORT, () => {
+server.listen(config.PORT,"https://vercel-pfc-repository-api.vercel.app/", () => {
   console.log(`Server has been startted on ${config.PORT}...`);
 });
 
