@@ -13,15 +13,9 @@ const server = http.createServer(app, (req, res) => {
     "Access-Control-Allow-Origin",
     "https://vercel-pfc-repository-web.vercel.app"
   );
-  res.setHeader(
-    "Access-Control-Request-Method",
-    "*"
-  );
+  res.setHeader("Access-Control-Request-Method", "*");
   res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "*"
-  );
+  res.setHeader("Access-Control-Allow-Headers", "*");
   if (req.method === "OPTIONS" || req.method === "GET") {
     res.writeHead(200);
     res.end();
@@ -37,6 +31,35 @@ app.use(cors());
 const io = new Server(server, {
   cors: { origin: "https://vercel-pfc-repository-web.vercel.app" },
   methods: ["GET", "POST"],
+});
+io.on("connection", (socket) => {
+  //on connection
+  const id = uuid();
+  console.log(`new socket connection ${id}`);
+  const status = { web_socket_connection: true };
+  io.emit("connection_status", status);
+  //on disconnect
+  socket.on("disconnect", (reason) => {
+    console.log(`socket has leave ${id}`);
+  });
+  //send message at other sockets and write this on database
+  socket.on("socket send message", (data) => {
+    const comment = {
+      text: data.text,
+      author: data.author.name,
+      email: data.author.email,
+    };
+    Comments.create({
+      text: data.text,
+      author: data.author.name,
+      email: data.author.email,
+    }).then(
+      console.log(`socket ${id} send ${comment.text} and this went to DB`)
+    );
+    io.emit("socket send message", {
+      comment,
+    });
+  });
 });
 
 app.get("/", (req, res) => {
@@ -125,35 +148,6 @@ app.get("/comments", (req, res) => {
 
 server.listen(config.PORT, () => {
   console.log(`Server has been startted on ${config.PORT}...`);
-  io.on("connection", (socket) => {
-    //on connection
-    const id = uuid();
-    console.log(`new socket connection ${id}`);
-    const status = { web_socket_connection: true };
-    io.emit("connection_status", status);
-    //on disconnect
-    socket.on("disconnect", (reason) => {
-      console.log(`socket has leave ${id}`);
-    });
-    //send message at other sockets and write this on database
-    socket.on("socket send message", (data) => {
-      const comment = {
-        text: data.text,
-        author: data.author.name,
-        email: data.author.email,
-      };
-      Comments.create({
-        text: data.text,
-        author: data.author.name,
-        email: data.author.email,
-      }).then(
-        console.log(`socket ${id} send ${comment.text} and this went to DB`)
-      );
-      io.emit("socket send message", {
-        comment,
-      });
-    });
-  });
 });
 
 export default {
