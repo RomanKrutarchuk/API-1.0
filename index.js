@@ -8,7 +8,9 @@ import cors from "cors";
 import { v4 as uuid } from "uuid";
 
 const app = express();
-const server = http.createServer(app);
+const server = http.createServer(app,(req,res)=>{
+  res.setHeader('Access-Control-Allow-Origin', 'https://vercel-pfc-repository-web.vercel.app');
+});
 const Comments = modules.Comments;
 const Users = modules.Users;
 
