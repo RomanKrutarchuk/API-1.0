@@ -14,7 +14,8 @@ const Users = modules.Users;
 
 app.use(express.json());
 app.use(cors());
-const io = new Server(app, { cors: { origin: "https://vercel-pfc-repository-web.vercel.app" } });
+
+const io = new Server(server, { cors: { origin: "https://vercel-pfc-repository-web.vercel.app" }, methods: ["GET", "POST"] });
 
 app.get("/", (req, res) => {
   res.send("hello vercel");
