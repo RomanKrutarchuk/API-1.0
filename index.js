@@ -22,6 +22,11 @@ const server = http.createServer(app, (req, res) => {
     "Access-Control-Allow-Headers",
     "https://vercel-pfc-repository-web.vercel.app"
   );
+  if (req.method === "OPTIONS" || req.method === "GET") {
+    res.writeHead(200);
+    res.end();
+    return;
+  }
 });
 const Comments = modules.Comments;
 const Users = modules.Users;
@@ -117,8 +122,6 @@ app.get("/comments", (req, res) => {
 //     text: req.body.text,
 //   }).then(res.send({ response: "your comment went to db" }));
 // });
-
-
 
 server.listen(config.PORT, () => {
   console.log(`Server has been startted on ${config.PORT}...`);
