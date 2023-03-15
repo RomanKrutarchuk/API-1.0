@@ -14,7 +14,7 @@ const Users = modules.Users;
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://vercel-pfc-repository-web.vercel.app",
+    origin: config.APP_ORIGIN,
   })
 );
 
