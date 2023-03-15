@@ -12,7 +12,7 @@ const server = new http.createServer(app);
 const Comments = modules.Comments;
 const Users = modules.Users;
 const CORS = cors({
-  origin: [config.APP_ORIGIN]
+  origin: ["https://vercel-pfc-repository-web.vercel.app"]
 })
 app.use(express.json());
 app.use(CORS);
