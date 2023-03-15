@@ -24,9 +24,15 @@ app.get("/", (req, res) => {
 
 const io = new Server(
   server,
-  cors({
-    origin: [config.APP_ORIGIN],
-  })
+  {
+    cors: {
+      origin: config.APP_ORIGIN,
+      credentials: true,
+    },
+  }
+  // cors({
+  //   origin: [config.APP_ORIGIN],
+  // })
 );
 io.on("connection", (socket) => {
   //on connection
