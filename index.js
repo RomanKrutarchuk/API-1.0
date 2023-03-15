@@ -8,28 +8,21 @@ import cors from "cors";
 import { v4 as uuid } from "uuid";
 
 const app = express();
-const server = http.createServer(app, (req, res) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://vercel-pfc-repository-web.vercel.app"
-  );
-  res.setHeader("Access-Control-Request-Method", "*");
-  res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  if (req.method === "OPTIONS" || req.method === "GET") {
-    res.writeHead(200);
-    res.end();
-    return;
-  }
-});
+const server = new http.createServer(app);
 const Comments = modules.Comments;
 const Users = modules.Users;
-
+const CORS = cors({
+  origin: [`${config.APP_ORIGIN}`]
+})
 app.use(express.json());
-app.use(cors());
+app.use(CORS);
+
+app.get("/", (req, res) => {
+  res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
+});
 
 const io = new Server(server, {
-  cors: { origin: "https://vercel-pfc-repository-web.vercel.app" },
+  cors: { origin: config.APP_ORIGIN },
   methods: ["GET", "POST"],
 });
 io.on("connection", (socket) => {
@@ -39,9 +32,10 @@ io.on("connection", (socket) => {
   const status = { web_socket_connection: true };
   io.emit("connection_status", status);
   //on disconnect
-  socket.on("disconnect", (reason) => {
-    console.log(`socket has leave ${id}`);
-  });
+  // socket.on("disconnect", (reason) => {
+  //   console.log(`socket has leave ${id}`);
+  // });
+
   //send message at other sockets and write this on database
   socket.on("socket send message", (data) => {
     const comment = {
@@ -62,9 +56,6 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/", (req, res) => {
-  res.send("hello vercel");
-});
 mongoose
   .connect(config.DBURL)
   .then((res) => {
@@ -80,11 +71,6 @@ app.post("/users/create", (req, res) => {
     email: req.body.email,
     password: req.body.password,
   }).then(res.send({ response: "succefull user create" }));
-  // console.log("new user created", {
-  //   name: req.body.name,
-  //   email: req.body.email,
-  //   password: req.body.password,
-  // });
 });
 
 app.get("/users/create", (req, res) => {
@@ -97,7 +83,7 @@ app.post("/users", (req, res) => {
     email: req.body.email,
   })
     .then((users) => {
-      console.log(users, "--------");
+      // console.log("Users_auth", users);
       if (users.length === 0) {
         const response = {
           status: "user_not_defiened",
@@ -138,18 +124,9 @@ app.get("/comments", (req, res) => {
   });
 });
 
-// app.post("/comments/create", (req, res) => {
-//   Comments.create({
-//     author: req.body.author.name,
-//     authoremail: req.body.author.email,
-//     text: req.body.text,
-//   }).then(res.send({ response: "your comment went to db" }));
-// });
-
 server.listen(config.PORT, () => {
-  console.log(`Server has been startted on ${config.PORT}...`);
+  console.log(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}, ...`);
 });
-
 export default {
   server,
 };
