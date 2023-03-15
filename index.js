@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 app.get("/", (req, res) => {
-  res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}, CORS: ${CORS}`);
+  res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
 
 const io = new Server(server, {
