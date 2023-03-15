@@ -12,18 +12,22 @@ const server = new http.createServer(app);
 const Comments = modules.Comments;
 const Users = modules.Users;
 app.use(express.json());
-app.use(cors({
-  origin: [config.APP_ORIGIN]
-}));
+app.use(
+  cors({
+    origin: [config.APP_ORIGIN],
+  })
+);
 
 app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
 
-const io = new Server(server, {
-  cors: { origin: config.APP_ORIGIN },
-  methods: ["GET", "POST"],
-});
+const io = new Server(
+  server,
+  cors({
+    origin: [config.APP_ORIGIN],
+  })
+);
 io.on("connection", (socket) => {
   //on connection
   const id = uuid();
