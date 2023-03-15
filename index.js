@@ -40,10 +40,10 @@ io.on("connection", (socket) => {
   console.log(`new socket connection ${id}`);
   const status = { web_socket_connection: true };
   io.emit("connection_status", status);
-  //on disconnect
-  // socket.on("disconnect", (reason) => {
-  //   console.log(`socket has leave ${id}`);
-  // });
+
+  socket.on("disconnect", (reason) => {
+    console.log(`socket has leave ${id}`);
+  });
 
   //send message at other sockets and write this on database
   socket.on("socket send message", (data) => {
@@ -84,7 +84,7 @@ app.post("/users/create", (req, res) => {
 
 app.get("/users/create", (req, res) => {
   res.send("user create page");
-});
+}); 
 
 app.post("/users", (req, res) => {
   Users.find({
