@@ -5,7 +5,7 @@ let START_ON = "https://vercel-pfc-repository-api.vercel.app";
 const PORT = 3000
 
 if (process.env.NODE_ENV === "development") {
-  APP_ORIGIN =`http://localhost:${PORT}`;
+  APP_ORIGIN =`http://localhost:8080`;
   START_ON = `http://localhost:${PORT}`;
 }
 

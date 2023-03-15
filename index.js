@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import http from "http";
 import config from "./config.js";
 import modules from "./models.js";
-import cors from "cors";
+// import cors from "cors";
 import { v4 as uuid } from "uuid";
 
 const app = express();
@@ -12,11 +12,11 @@ const server = new http.createServer(app);
 const Comments = modules.Comments;
 const Users = modules.Users;
 app.use(express.json());
-app.use(
-  cors({
-    origin: config.APP_ORIGIN,
-  })
-);
+// app.use(
+//   cors({
+//     origin: config.APP_ORIGIN,
+//   })
+// );
 
 app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
@@ -24,12 +24,12 @@ app.get("/", (req, res) => {
 
 const io = new Server(
   server,
-  {
-    cors: {
-      origin: config.APP_ORIGIN,
-      credentials: true,
-    },
-  }
+  // {
+  //   cors: {
+  //     origin: config.APP_ORIGIN,
+  //     credentials: true,
+  //   },
+  // }
   // cors({
   //   origin: [config.APP_ORIGIN],
   // })
