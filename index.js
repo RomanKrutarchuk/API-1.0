@@ -14,7 +14,8 @@ const Users = modules.Users;
 app.use(express.json());
 app.use(
   cors({
-    origin: config.APP_ORIGIN,
+    // origin: config.APP_ORIGIN,
+    origin: "*",
   })
 );
 app.get("/", (req, res) => {
