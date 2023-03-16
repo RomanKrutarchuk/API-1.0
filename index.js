@@ -23,10 +23,13 @@ app.get("/", (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: config.APP_ORIGIN,
-    credentials: true,
-    methods: ["GET","POST"]
+    origin: "*",
   },
+  // cors: {
+  //   origin: config.APP_ORIGIN,
+  //   credentials: true,
+  //   methods: ["GET","POST"]
+  // },
   // cros: cors({
   //   origin: config.APP_ORIGIN,
   // }),
