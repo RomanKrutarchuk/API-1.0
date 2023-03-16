@@ -21,16 +21,16 @@ app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
 
-const io = new Server(
-  server,
-  {
-    cors: {
-      origin: config.APP_ORIGIN,
-      credentials: true,
-      methods: ["GET","POST"]
-    },
-  }
-);
+const io = new Server(server, {
+  // cors: {
+  //   origin: config.APP_ORIGIN,
+  //   credentials: true,
+  //   methods: ["GET","POST"]
+  // },
+  cros: cors({
+    origin: config.APP_ORIGIN,
+  }),
+});
 io.on("connection", (socket) => {
   //on connection
   const id = uuid();
@@ -81,7 +81,7 @@ app.post("/users/create", (req, res) => {
 
 app.get("/users/create", (req, res) => {
   res.send("user create page");
-}); 
+});
 
 app.post("/users", (req, res) => {
   Users.find({
