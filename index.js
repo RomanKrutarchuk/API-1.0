@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origins: "*",
+    origin: "*",
     methods: "*",
   },
 });
