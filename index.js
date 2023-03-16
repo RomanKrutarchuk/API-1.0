@@ -22,14 +22,14 @@ app.get("/", (req, res) => {
 });
 
 const io = new Server(server, {
-  // cors: {
-  //   origin: config.APP_ORIGIN,
-  //   credentials: true,
-  //   methods: ["GET","POST"]
-  // },
-  cros: cors({
+  cors: {
     origin: config.APP_ORIGIN,
-  }),
+    credentials: true,
+    methods: ["GET","POST"]
+  },
+  // cros: cors({
+  //   origin: config.APP_ORIGIN,
+  // }),
 });
 io.on("connection", (socket) => {
   //on connection
