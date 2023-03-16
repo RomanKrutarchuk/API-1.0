@@ -26,8 +26,7 @@ app.get("/", (req, res) => {
 const io = new Server(server, {
   cors: {
     origins: "*",
-    headers: "origin, x-requested-with, content-type",
-    methods: ["GET", "POST", "OPTION", "PUT", "DELETE"],
+    methods: "*",
   },
 });
 io.on("connection", (socket) => {
