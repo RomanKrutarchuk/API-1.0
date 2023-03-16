@@ -14,10 +14,10 @@ const Users = modules.Users;
 app.use(express.json());
 app.use(
   cors({
-    // origin: config.APP_ORIGIN,
-    origin: "*",
+    origin: [config.APP_ORIGIN, "*"],
   })
 );
+
 app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
@@ -25,6 +25,7 @@ app.get("/", (req, res) => {
 const io = new Server(server, {
   cors: {
     origin: "*",
+    methods: ["GET", "POST"],
   },
   // cors: {
   //   origin: config.APP_ORIGIN,
