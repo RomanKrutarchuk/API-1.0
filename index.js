@@ -27,16 +27,8 @@ const io = new Server(server, {
   cors: {
     origin: "*",
     headers: "origin, x-requested-with, content-type",
-    methods: ["GET", "POST","OPTION","PUT","DELETE"],
+    methods: ["GET", "POST", "OPTION", "PUT", "DELETE"],
   },
-  // cors: {
-  //   origin: config.APP_ORIGIN,
-  //   credentials: true,
-  //   methods: ["GET","POST"]
-  // },
-  // cros: cors({
-  //   origin: config.APP_ORIGIN,
-  // }),
 });
 io.on("connection", (socket) => {
   //on connection
@@ -123,6 +115,7 @@ app.post("/users", (req, res) => {
       }
     })
     .catch((error) => res.send(error));
+  res.end();
 });
 
 app.get("/users", (req, res) => {
