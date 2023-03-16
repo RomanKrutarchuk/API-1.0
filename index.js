@@ -8,14 +8,21 @@ import cors from "cors";
 import { v4 as uuid } from "uuid";
 
 const app = express();
-const server = new http.createServer(app);
+const server = new http.createServer(app, (req, res) => {
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
+  };
+  res.writeHead(204, headers);
+});
 const Comments = modules.Comments;
 const Users = modules.Users;
 app.use(express.json());
+
 app.use((req, res, next) => {
-  res.append('Access-Control-Allow-Origin', ['*']);
-  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  res.append("Access-Control-Allow-Origin", ["*"]);
+  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.append("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
 
