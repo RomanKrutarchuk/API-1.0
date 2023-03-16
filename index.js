@@ -108,6 +108,7 @@ app.post("/users", (req, res) => {
             },
           };
           res.send(response);
+          res.end();
         } else if (RequestPassword != user.password) {
           const response = { status: "invalid passoword" };
           res.send(response);
@@ -115,7 +116,6 @@ app.post("/users", (req, res) => {
       }
     })
     .catch((error) => res.send(error));
-  res.end();
 });
 
 app.get("/users", (req, res) => {
