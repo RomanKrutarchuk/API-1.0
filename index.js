@@ -24,10 +24,16 @@ app.get("/", (req, res) => {
 });
 
 const io = new Server(server, {
+  // cors: {
+  //   origin: "*",
+  //   methods: "*",
+  // },
   cors: {
-    origin: "*",
-    methods: "*",
-  },
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Access-Control-Allow-Origin'],
+    // credentials: true
+  }
 });
 io.on("connection", (socket) => {
   //on connection
