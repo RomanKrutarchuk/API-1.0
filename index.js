@@ -32,7 +32,7 @@ const io = new Server(server, {
     origin: '*',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Access-Control-Allow-Origin'],
-    // credentials: true
+    credentials: true
   }
 });
 io.on("connection", (socket) => {
