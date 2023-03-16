@@ -12,6 +12,7 @@ const server = new http.createServer(app);
 const Comments = modules.Comments;
 const Users = modules.Users;
 app.use(express.json());
+
 app.use(
   cors({
     origin: [config.APP_ORIGIN, "*"],
@@ -25,7 +26,7 @@ app.get("/", (req, res) => {
 const io = new Server(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTION"],
   },
   // cors: {
   //   origin: config.APP_ORIGIN,
