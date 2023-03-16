@@ -29,11 +29,11 @@ const io = new Server(server, {
   //   methods: "*",
   // },
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Access-Control-Allow-Origin'],
-    credentials: true
-  }
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS", "PUT"],
+    allowedHeaders: ["Access-Control-Allow-Origin"],
+    credentials: true,
+  },
 });
 io.on("connection", (socket) => {
   //on connection

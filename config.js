@@ -18,3 +18,5 @@ export default {
 };
 
 //for publish code on repository 1.git remote add origin https:// 1.5git remote -v 2.git push -u origin master
+
+//curl -i -X OPTIONS -H "Access-Control-Request-Method: GET" -H "Origin: http://origin.ok"  'https://vercel-pfc-repository-api.vercel.app/socket.io/?EIO=4&transport=polling&t=ORhaiGb&sid=-oJClaOz9LsL3ev2AAAA'
