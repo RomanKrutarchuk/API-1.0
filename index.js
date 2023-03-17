@@ -16,7 +16,12 @@ const server = new http.createServer(
     })
   )
 );
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer(
+  { server },
+  cors({
+    origin: [config.APP_ORIGIN, "*"],
+  })
+);
 const Comments = modules.Comments;
 const Users = modules.Users;
 
