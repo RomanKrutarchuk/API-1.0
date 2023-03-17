@@ -6,15 +6,9 @@ import config from "./config.js";
 import modules from "./models.js";
 import cors from "cors";
 import { v4 as uuid } from "uuid";
+import { WebSocketServer } from "ws";
 
 const app = express();
-// (req, res) => {
-//   const headers = {
-//     "Access-Control-Allow-Origin": "*",
-//     "Access-Control-Allow-Methods": "OPTIONS, POST, GET",
-//   };
-//   res.writeHead(204, headers);
-// }
 const server = new http.createServer(
   app.use(
     cors({
@@ -22,61 +16,64 @@ const server = new http.createServer(
     })
   )
 );
+const wss = new WebSocketServer({ server });
 const Comments = modules.Comments;
 const Users = modules.Users;
-app.use(express.json());
 
-// app.use(
-//   cors({
-//     origin: [config.APP_ORIGIN, "*"],
-//   })
-// );
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
 
-const io = new Server(
-  server,
-  // cors: {
-  //   origin: "*",
-  //   methods: "*",
-  // },
-  // cors: {
-  //   origin: "*",
-  //   methods: ["GET", "POST", "OPTIONS", "PUT"],
-  // },
-);
-io.on("connection", (socket) => {
-  //on connection
-  const id = uuid();
-  console.log(`new socket connection ${id}`);
-  const status = { web_socket_connection: true };
-  io.emit("connection_status", status);
-
-  socket.on("disconnect", (reason) => {
-    console.log(`socket has leave ${id}`);
-  });
-
-  //send message at other sockets and write this on database
-  socket.on("socket send message", (data) => {
-    const comment = {
-      text: data.text,
-      author: data.author.name,
-      email: data.author.email,
-    };
-    Comments.create({
-      text: data.text,
-      author: data.author.name,
-      email: data.author.email,
-    }).then(
-      console.log(`socket ${id} send ${comment.text} and this went to DB`)
-    );
-    io.emit("socket send message", {
-      comment,
-    });
+wss.on("connection", (ws) => {
+  console.log("new ws connection");
+  ws.on("close", () => {
+    console.log("ws disconnect");
   });
 });
+
+// const io = new Server(
+//   server,
+//   // cors: {
+//   //   origin: "*",
+//   //   methods: "*",
+//   // },
+//   // cors: {
+//   //   origin: "*",
+//   //   methods: ["GET", "POST", "OPTIONS", "PUT"],
+//   // },
+// );
+// io.on("connection", (socket) => {
+//   //on connection
+//   const id = uuid();
+//   console.log(`new socket connection ${id}`);
+//   const status = { web_socket_connection: true };
+//   io.emit("connection_status", status);
+
+//   socket.on("disconnect", (reason) => {
+//     console.log(`socket has leave ${id}`);
+//   });
+
+//   //send message at other sockets and write this on database
+//   socket.on("socket send message", (data) => {
+//     const comment = {
+//       text: data.text,
+//       author: data.author.name,
+//       email: data.author.email,
+//     };
+//     Comments.create({
+//       text: data.text,
+//       author: data.author.name,
+//       email: data.author.email,
+//     }).then(
+//       console.log(`socket ${id} send ${comment.text} and this went to DB`)
+//     );
+//     io.emit("socket send message", {
+//       comment,
+//     });
+//   });
+// });
 
 mongoose
   .connect(config.DBURL)
