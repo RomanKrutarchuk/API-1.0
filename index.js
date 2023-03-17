@@ -41,10 +41,13 @@ const io = new Server(server, {
   //   origin: "*",
   //   methods: "*",
   // },
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST", "OPTIONS", "PUT"],
-  },
+  // cors: {
+  //   origin: "*",
+  //   methods: ["GET", "POST", "OPTIONS", "PUT"],
+  // },
+  cors({
+      origin: [config.APP_ORIGIN, "*"],
+    })
 });
 io.on("connection", (socket) => {
   //on connection
