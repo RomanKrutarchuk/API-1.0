@@ -36,7 +36,8 @@ app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
 
-const io = new Server(server, {
+const io = new Server(
+  server,
   // cors: {
   //   origin: "*",
   //   methods: "*",
@@ -46,9 +47,9 @@ const io = new Server(server, {
   //   methods: ["GET", "POST", "OPTIONS", "PUT"],
   // },
   cors({
-      origin: [config.APP_ORIGIN, "*"],
-    })
-});
+    origin: [config.APP_ORIGIN, "*"],
+  })
+);
 io.on("connection", (socket) => {
   //on connection
   const id = uuid();
