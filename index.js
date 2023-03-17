@@ -16,7 +16,7 @@ const server = new https.createServer(
     })
   )
 );
-const wss = new WebSocketServer({ server, path: "/wss" });
+const wss = new WebSocketServer({ server, path: "/ws" });
 const Comments = modules.Comments;
 const Users = modules.Users;
 
