@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
-import http from "http";
+import https from "http";
 import config from "./config.js";
 import modules from "./models.js";
 import cors from "cors";
@@ -9,19 +9,14 @@ import { v4 as uuid } from "uuid";
 import { WebSocketServer } from "ws";
 
 const app = express();
-const server = new http.createServer(
+const server = new https.createServer(
   app.use(
     cors({
       origin: [config.APP_ORIGIN, "*"],
     })
   )
 );
-const wss = new WebSocketServer(
-  { server },
-  cors({
-    origin: [config.APP_ORIGIN, "*"],
-  })
-);
+const wss = new WebSocketServer({ server });
 const Comments = modules.Comments;
 const Users = modules.Users;
 
@@ -149,8 +144,9 @@ app.get("/comments", (req, res) => {
   });
 });
 
-server.listen(config.PORT, () => {
+server.listen(config.PORT, (res, req) => {
   console.log(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}, ...`);
+  
 });
 export default {
   server,
