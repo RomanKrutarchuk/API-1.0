@@ -46,9 +46,6 @@ const io = new Server(
   //   origin: "*",
   //   methods: ["GET", "POST", "OPTIONS", "PUT"],
   // },
-  cors({
-    origin: [config.APP_ORIGIN, "*"],
-  })
 );
 io.on("connection", (socket) => {
   //on connection
