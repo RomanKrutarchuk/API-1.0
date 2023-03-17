@@ -15,17 +15,16 @@ const app = express();
 //   };
 //   res.writeHead(204, headers);
 // }
-const server = new http.createServer(app.use((req, res, next) => {
-  res.append("Access-Control-Allow-Origin", ["*"]);
-  res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.append("Access-Control-Allow-Headers", "Content-Type");
-  next();
-}));
+const server = new http.createServer(
+  app.use(
+    cors({
+      origin: [config.APP_ORIGIN, "*"],
+    })
+  )
+);
 const Comments = modules.Comments;
 const Users = modules.Users;
 app.use(express.json());
-
-
 
 // app.use(
 //   cors({
@@ -42,12 +41,12 @@ const io = new Server(server, {
   //   origin: "*",
   //   methods: "*",
   // },
-  // cors: {
-  //   origin: "*",
-  //   methods: ["GET", "POST", "OPTIONS", "PUT"],
-  //   allowedHeaders: ["Access-Control-Allow-Origin"],
-  //   credentials: true,
-  // },
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS", "PUT"],
+    allowedHeaders: ["Access-Control-Allow-Origin"],
+    credentials: true,
+  },
 });
 io.on("connection", (socket) => {
   //on connection
