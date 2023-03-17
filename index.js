@@ -44,8 +44,6 @@ const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST", "OPTIONS", "PUT"],
-    allowedHeaders: ["Access-Control-Allow-Origin"],
-    credentials: true,
   },
 });
 io.on("connection", (socket) => {
