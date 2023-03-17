@@ -16,7 +16,7 @@ const server = new https.createServer(
     })
   )
 );
-const wss = new WebSocketServer({ server });
+const wss = new WebSocketServer({ server, path: "/wss" });
 const Comments = modules.Comments;
 const Users = modules.Users;
 
@@ -25,7 +25,12 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
 });
-
+wss.on("headers", (headers, request) => {
+  headers.push("Access-Control-Allow-Origin: *");
+  headers.push(
+    "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"
+  );
+});
 wss.on("connection", (ws) => {
   console.log("new ws connection");
   ws.on("close", () => {
@@ -146,7 +151,6 @@ app.get("/comments", (req, res) => {
 
 server.listen(config.PORT, (res, req) => {
   console.log(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}, ...`);
-  
 });
 export default {
   server,
