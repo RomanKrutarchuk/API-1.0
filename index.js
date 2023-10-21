@@ -25,7 +25,7 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"],
   },
   pingTimeout: 60000,
-  transports: ["websocket"],
+  transports: ["websocket","polling"],
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
