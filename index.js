@@ -1,42 +1,90 @@
-import express from "express";
-import mongoose from "mongoose";
+import http from "http";
+// import express from "express";
+// import cors from "cors";
 import { Server } from "socket.io";
-import https from "http";
-import config from "./config.js";
-import modules from "./models.js";
-import cors from "cors";
-import { v4 as uuid } from "uuid";
-import { WebSocketServer } from "ws";
 
-const app = express();
-const server = new https.createServer(
-  app.use(
-    cors({
-      origin: [config.APP_ORIGIN, "*"],
-    })
-  )
-);
-const wss = new WebSocketServer({ server, path: "/ws" });
-const Comments = modules.Comments;
-const Users = modules.Users;
-
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
+const port = 80;
+// const app = express();
+// app.use(cors());
+// app.get("/", (req, res) => {
+//   console.log("New connection");
+// });
+const httpServer = http.createServer((req, res) => {
+  console.log("HTTP CONNECTION");
+  // res.setHeader("Access-Control-Allow-Headers", "content-type");
+  res.writeHead(200, {
+    "Content-Type": "application/json, */*",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  });
+  if (req.method === "OPTIONS") {
+    res.writeHead(204, {
+      // "Content-Type": "application/json, text/plain, */*",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    });
+  }
+  res.end();
 });
-wss.on("headers", (headers, request) => {
-  headers.push("Access-Control-Allow-Origin: *");
-  headers.push(
-    "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"
-  );
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
 });
-wss.on("connection", (ws) => {
-  console.log("new ws connection");
-  ws.on("close", () => {
-    console.log("ws disconnect");
+io.on("connection", (socket) => {
+  console.log("socket connection");
+  io.emit("socket send message", {
+    message: "hi",
   });
 });
+
+httpServer.listen(port, () => {
+  console.log(`SERVER_PORT: ${port}`);
+});
+
+
+
+
+// import express from "express";
+// import mongoose from "mongoose";
+// import { Server } from "socket.io";
+// import https from "http";
+// import config from "./config.js";
+// import modules from "./models.js";
+// import cors from "cors";
+// import { v4 as uuid } from "uuid";
+// import { WebSocketServer } from "ws";
+
+// const app = express();
+// const server = new https.createServer(
+//   app.use(
+//     cors({
+//       origin: [config.APP_ORIGIN, "*"],
+//     })
+//   )
+// );
+// const wss = new WebSocketServer({ server});
+// const Comments = modules.Comments;
+// const Users = modules.Users;
+
+// app.use(express.json());
+
+// app.get("/", (req, res) => {
+//   res.send(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}`);
+// });
+// wss.on("headers", (headers, request) => {
+//   headers.push("Access-Control-Allow-Origin: *");
+//   headers.push(
+//     "Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept"
+//   );
+// });
+// wss.on("connection", (ws) => {
+//   console.log("new ws connection");
+//   ws.on("close", () => {
+//     console.log("ws disconnect");
+//   });
+// });
 
 // const io = new Server(
 //   server,
@@ -80,78 +128,78 @@ wss.on("connection", (ws) => {
 //   });
 // });
 
-mongoose
-  .connect(config.DBURL)
-  .then((res) => {
-    console.log("connected to database");
-  })
-  .catch((error) => {
-    console.log("connection to db error-", error);
-  });
+// mongoose
+//   .connect(config.DBURL)
+//   .then((res) => {
+//     console.log("connected to database");
+//   })
+//   .catch((error) => {
+//     console.log("connection to db error-", error);
+//   });
 
-app.post("/users/create", (req, res) => {
-  Users.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-  }).then(res.send({ response: "succefull user create" }));
-});
+// app.post("/users/create", (req, res) => {
+//   Users.create({
+//     name: req.body.name,
+//     email: req.body.email,
+//     password: req.body.password,
+//   }).then(res.send({ response: "succefull user create" }));
+// });
 
-app.get("/users/create", (req, res) => {
-  res.send("user create page");
-});
+// app.get("/users/create", (req, res) => {
+//   res.send("user create page");
+// });
 
-app.post("/users", (req, res) => {
-  Users.find({
-    name: req.body.name,
-    email: req.body.email,
-  })
-    .then((users) => {
-      // console.log("Users_auth", users);
-      if (users.length === 0) {
-        const response = {
-          status: "user_not_defiened",
-        };
-        res.send(response);
-      } else {
-        //users is an array
-        const user = users.find((user) => user.name === req.body.name);
-        const RequestPassword = req.body.password;
-        // console.log("this user", user, RequestPassword);
-        if (RequestPassword === user.password) {
-          const response = {
-            status: "authorized",
-            user: {
-              name: user.name,
-              email: user.email,
-            },
-          };
-          res.send(response);
-          res.end();
-        } else if (RequestPassword != user.password) {
-          const response = { status: "invalid passoword" };
-          res.send(response);
-        }
-      }
-    })
-    .catch((error) => res.send(error));
-});
+// app.post("/users", (req, res) => {
+//   Users.find({
+//     name: req.body.name,
+//     email: req.body.email,
+//   })
+//     .then((users) => {
+//       // console.log("Users_auth", users);
+//       if (users.length === 0) {
+//         const response = {
+//           status: "user_not_defiened",
+//         };
+//         res.send(response);
+//       } else {
+//         //users is an array
+//         const user = users.find((user) => user.name === req.body.name);
+//         const RequestPassword = req.body.password;
+//         // console.log("this user", user, RequestPassword);
+//         if (RequestPassword === user.password) {
+//           const response = {
+//             status: "authorized",
+//             user: {
+//               name: user.name,
+//               email: user.email,
+//             },
+//           };
+//           res.send(response);
+//           res.end();
+//         } else if (RequestPassword != user.password) {
+//           const response = { status: "invalid passoword" };
+//           res.send(response);
+//         }
+//       }
+//     })
+//     .catch((error) => res.send(error));
+// });
 
-app.get("/users", (req, res) => {
-  Users.find().then((users) => {
-    res.send(users);
-  });
-});
+// app.get("/users", (req, res) => {
+//   Users.find().then((users) => {
+//     res.send(users);
+//   });
+// });
 
-app.get("/comments", (req, res) => {
-  Comments.find().then((comments) => {
-    res.send(comments);
-  });
-});
+// app.get("/comments", (req, res) => {
+//   Comments.find().then((comments) => {
+//     res.send(comments);
+//   });
+// });
 
-server.listen(config.PORT, (res, req) => {
-  console.log(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}, ...`);
-});
-export default {
-  server,
-};
+// server.listen(config.PORT, (res, req) => {
+//   console.log(`ORIGIN:${config.APP_ORIGIN}, START_ON:${config.START_ON}, ...`);
+// });
+// export default {
+//   server,
+// };
