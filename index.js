@@ -4,25 +4,17 @@ import http from "http";
 import { Server } from "socket.io";
 
 const port = 80;
-// const app = express();
-// app.use(cors());
-// app.get("/", (req, res) => {
-//   console.log("New connection");
-// });
+
 const httpServer = http.createServer((req, res) => {
   console.log("HTTP CONNECTION");
-  // res.setHeader("Access-Control-Allow-Headers", "content-type");
-  res.writeHead(200, {
+  const headers = {
     "Content-Type": "application/json, */*",
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  });
+  };
+  res.writeHead(200, headers);
   if (req.method === "OPTIONS") {
-    res.writeHead(204, {
-      // "Content-Type": "application/json, text/plain, */*",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    });
+    res.writeHead(204, headers);
   }
   res.end();
 });
@@ -30,6 +22,8 @@ const httpServer = http.createServer((req, res) => {
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
+    methods: ["GET", "POST"],
+    credentials: false,
   },
 });
 io.on("connection", (socket) => {
@@ -42,9 +36,6 @@ io.on("connection", (socket) => {
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
 });
-
-
-
 
 // import express from "express";
 // import mongoose from "mongoose";
