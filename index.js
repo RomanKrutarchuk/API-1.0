@@ -23,7 +23,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-    transports: ['websocket', 'polling'],
+    transports: ['websocket'],
   },
   allowEIO3: true,
   handlePreflightRequest: (req, res) => {
