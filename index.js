@@ -23,6 +23,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
+    transports: ['websocket', 'polling'],
   },
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
