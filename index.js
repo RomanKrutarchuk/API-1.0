@@ -25,6 +25,7 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"],
     transports: ['websocket', 'polling'],
   },
+  allowEIO3: true,
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
