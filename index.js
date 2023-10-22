@@ -24,11 +24,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST", "PUT"],
-    transports: ["websocket"],
-    allowedHeaders: ["content-type"],
   },
-  upgrades: ["websocket"],
-  pingTimeout: 50000,
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
