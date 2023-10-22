@@ -31,7 +31,7 @@ const io = new Server(httpServer, {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,POST,PUT",
-      "Content-Type": "application/json, text/plain, */*",
+      "Content-Type": "application/json",
     });
     res.end();
   },
