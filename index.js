@@ -23,7 +23,7 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST", "PUT"],
-    transports: ["polling", "websocket", "webtransport"],
+    transports: ["websocket", "webtransport"],
   },
   pingTimeout: 50000,
   handlePreflightRequest: (req, res) => {
