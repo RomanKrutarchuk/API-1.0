@@ -25,6 +25,7 @@ const io = new Server(httpServer, {
     origin: "*",
     methods: ["GET", "POST", "PUT"],
   },
+  transports:["websocket","polling"],
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
@@ -35,7 +36,10 @@ const io = new Server(httpServer, {
   },
 });
 io.on("connection", (socket) => {
+  socket.handshake.headers.origin = "*";
+  //
   console.log("socket connection");
+  //
   io.emit("socket send message", {
     message: "hi",
   });
