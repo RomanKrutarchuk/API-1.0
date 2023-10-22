@@ -22,14 +22,14 @@ const httpServer = http.createServer((req, res) => {
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PUT"],
   },
-  pingTimeout: 60000,
-  transports: ["websocket","polling"],
+  pingTimeout: 50000,
+  transports: ["polling", "websocket", "webtransport"],
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST",
+      "Access-Control-Allow-Methods": "GET,POST,PUT",
       "Content-Type": "application/json, text/plain, */*",
     });
     res.end();
