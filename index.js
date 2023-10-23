@@ -20,7 +20,6 @@ const httpServer = http.createServer((req, res) => {
 });
 
 const io = new Server(httpServer, {
-  path: "/socket/",
   allowEIO3: true,
   cors: {
     origin: "*",
@@ -40,9 +39,9 @@ io.on("connection", (socket) => {
   //
   console.log("socket connection");
   //
-  io.emit("socket send message", {
-    message: "hi",
-  });
+  // io.emit("socket send message", {
+  //   message: "hi",
+  // });
 });
 
 httpServer.listen(port, () => {
