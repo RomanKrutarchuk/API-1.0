@@ -21,6 +21,7 @@ const httpServer = http.createServer((req, res) => {
 
 const io = new Server(httpServer, {
   path: "/socket/",
+  allowEIO3: true,
   cors: {
     origin: "*",
     methods: ["GET", "POST", "PUT"],
@@ -36,7 +37,6 @@ const io = new Server(httpServer, {
   },
 });
 io.on("connection", (socket) => {
-  socket.handshake.headers.origin = "*";
   //
   console.log("socket connection");
   //
