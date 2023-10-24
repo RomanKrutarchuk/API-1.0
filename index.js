@@ -20,12 +20,10 @@ const httpServer = http.createServer((req, res) => {
 });
 
 const io = new Server(httpServer, {
-  allowEIO3: false,
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
-  transports:["websocket","polling"],
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
@@ -42,9 +40,7 @@ httpServer.listen(port, () => {
 
   io.on("connection", (socket) => {
     console.log(`socket connection: ${socket.id}`);
-    socket.handshake.secure = false;
     socket.handshake.headers.origin = "*";
-    socket.handshake.headers.accept = "/";
     // console.log(socket);
     io.emit("socket send message", {
       message: "success",
