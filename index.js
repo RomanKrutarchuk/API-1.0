@@ -35,17 +35,18 @@ const io = new Server(httpServer, {
     res.end();
   },
 });
-io.on("connection", (socket) => {
-  //
-  console.log("socket connection");
-  //
-  // io.emit("socket send message", {
-  //   message: "hi",
-  // });
-});
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
+
+  io.on("connection", (socket) => {
+    //
+    console.log("socket connection");
+    //
+    // io.emit("socket send message", {
+    //   message: "hi",
+    // });
+  });
 });
 
 // import express from "express";
