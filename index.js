@@ -27,9 +27,9 @@ const io = new Server(httpServer, {
   handlePreflightRequest: (req, res) => {
     res.writeHead(200, {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,PUT",
+      "Access-Control-Allow-Methods": "GET,POST",
       "Content-Type": "application/json",
-      "Accept": "/",
+      "Accept": "*",
     });
     res.end();
   },
@@ -38,14 +38,14 @@ const io = new Server(httpServer, {
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
 
-  io.on("connection", (socket) => {
-    console.log(`socket connection: ${socket.id}`);
-    socket.handshake.headers.origin = "*";
-    // console.log(socket);
-    io.emit("socket send message", {
-      message: "success",
-    });
-  });
+  // io.on("connection", (socket) => {
+  //   console.log(`socket connection: ${socket.id}`);
+  //   socket.handshake.headers.origin = "*";
+  //   // console.log(socket);
+  //   io.emit("socket send message", {
+  //     message: "success",
+  //   });
+  // });
 });
 
 // import express from "express";
