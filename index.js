@@ -20,10 +20,10 @@ const httpServer = http.createServer((req, res) => {
 });
 
 const io = new Server(httpServer, {
-  allowEIO3: true,
+  allowEIO3: false,
   cors: {
     origin: "*",
-    methods: ["GET", "POST", "PUT"],
+    methods: ["GET", "POST"],
   },
   transports:["websocket","polling"],
   handlePreflightRequest: (req, res) => {
@@ -40,8 +40,7 @@ httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
 
   io.on("connection", (socket) => {
-    //
-    console.log("socket connection");
+    console.log(`socket connection: ${socket.id}`);
     //
     // io.emit("socket send message", {
     //   message: "hi",
