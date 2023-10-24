@@ -31,6 +31,7 @@ const io = new Server(httpServer, {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET,POST,PUT",
       "Content-Type": "application/json",
+      "Accept": "/",
     });
     res.end();
   },
@@ -41,10 +42,13 @@ httpServer.listen(port, () => {
 
   io.on("connection", (socket) => {
     console.log(`socket connection: ${socket.id}`);
-    //
-    // io.emit("socket send message", {
-    //   message: "hi",
-    // });
+    socket.handshake.secure = false;
+    socket.handshake.headers.origin = "*";
+    socket.handshake.headers.accept = "/";
+    // console.log(socket);
+    io.emit("socket send message", {
+      message: "success",
+    });
   });
 });
 
