@@ -21,6 +21,8 @@ const httpServer = http.createServer((req, res) => {
 
 const io = new Server(httpServer, {
   optionsSuccessStatus: 204,
+  transports: ["websocket"],
+  upgrade: false,
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
@@ -34,7 +36,6 @@ const io = new Server(httpServer, {
     res.end();
   },
 });
-io.set("transports", ["websocket"]);
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
