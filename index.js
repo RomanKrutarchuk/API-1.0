@@ -21,7 +21,7 @@ const httpServer = http.createServer((req, res) => {
 
 const io = new Server(httpServer, {
   optionsSuccessStatus: 204,
-  transports: ["websocket"],
+  transports: ["polling"],
   upgrade: false,
   cors: {
     origin: "*",
