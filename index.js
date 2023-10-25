@@ -24,15 +24,6 @@ const io = new Server(httpServer, {
     origin: "*",
     methods: ["GET", "POST"],
   },
-  handlePreflightRequest: (req, res) => {
-    res.writeHead(200, {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST",
-      "Content-Type": "application/json",
-      "Accept": "*",
-    });
-    res.end();
-  },
 });
 
 httpServer.listen(port, () => {
