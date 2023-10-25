@@ -16,6 +16,12 @@ const httpServer = http.createServer((req, res) => {
   if (req.method === "OPTIONS") {
     res.writeHead(204, headers);
   }
+  if (req.method === "GET") {
+    res.writeHead(204, headers);
+  }
+  if (req.method === "POST") {
+    res.writeHead(204, headers);
+  }
   res.end();
 });
 
