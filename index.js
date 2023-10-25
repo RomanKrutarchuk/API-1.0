@@ -26,13 +26,13 @@ const httpServer = http.createServer((req, res) => {
 });
 
 const io = new Server(httpServer, {
-  transports: ["polling", "websocket", "webtransport"],
   optionsSuccessStatus: 204,
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
   },
 });
+io.set("transports", ["websocket"]);
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
