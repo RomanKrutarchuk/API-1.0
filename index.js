@@ -20,6 +20,8 @@ const httpServer = http.createServer((req, res) => {
 });
 
 const io = new Server(httpServer, {
+  transports: ["polling", "websocket", "webtransport"],
+  optionsSuccessStatus: 204,
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
@@ -29,14 +31,14 @@ const io = new Server(httpServer, {
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
 
-  // io.on("connection", (socket) => {
-  //   console.log(`socket connection: ${socket.id}`);
-  //   socket.handshake.headers.origin = "*";
-  //   // console.log(socket);
-  //   io.emit("socket send message", {
-  //     message: "success",
-  //   });
-  // });
+  io.on("connection", (socket) => {
+    console.log(`socket connection: ${socket.id}`);
+    socket.handshake.headers.origin = "*";
+    // console.log(socket);
+    io.emit("socket send message", {
+      message: "success",
+    });
+  });
 });
 
 // import express from "express";
