@@ -18,8 +18,7 @@ const httpServer = http.createServer((req, res) => {
   }
   res.end();
 });
-
-const io = new Server(httpServer, {
+const io = new Server({
   optionsSuccessStatus: 204,
   transports: ["polling"],
   upgrade: false,
@@ -36,6 +35,8 @@ const io = new Server(httpServer, {
     res.end();
   },
 });
+io.listen(httpServer)
+
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
