@@ -16,12 +16,6 @@ const httpServer = http.createServer((req, res) => {
   if (req.method === "OPTIONS") {
     res.writeHead(204, headers);
   }
-  if (req.method === "GET") {
-    res.writeHead(204, headers);
-  }
-  if (req.method === "POST") {
-    res.writeHead(204, headers);
-  }
   res.end();
 });
 
@@ -33,18 +27,16 @@ const io = new Server(httpServer, {
   },
 });
 io.set("transports", ["websocket"]);
-
+io.on("connection", (socket) => {
+  console.log(`socket connection: ${socket.id}`);
+  socket.handshake.headers.origin = "*";
+  // console.log(socket);
+  io.emit("socket send message", {
+    message: "success",
+  });
+});
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
-
-  io.on("connection", (socket) => {
-    console.log(`socket connection: ${socket.id}`);
-    socket.handshake.headers.origin = "*";
-    // console.log(socket);
-    io.emit("socket send message", {
-      message: "success",
-    });
-  });
 });
 
 // import express from "express";
