@@ -25,18 +25,27 @@ const io = new Server(httpServer, {
     origin: "*",
     methods: ["GET", "POST"],
   },
+  handlePreflightRequest: (req, res) => {
+    res.writeHead(200, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,POST,PUT",
+      "Content-Type": "application/json",
+    });
+    res.end();
+  },
 });
 io.set("transports", ["websocket"]);
-io.on("connection", (socket) => {
-  console.log(`socket connection: ${socket.id}`);
-  socket.handshake.headers.origin = "*";
-  // console.log(socket);
-  io.emit("socket send message", {
-    message: "success",
-  });
-});
+
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
+  io.on("connection", (socket) => {
+    console.log(`socket connection: ${socket.id}`);
+    socket.handshake.headers.origin = "*";
+    // console.log(socket);
+    io.emit("socket send message", {
+      message: "success",
+    });
+  });
 });
 
 // import express from "express";
