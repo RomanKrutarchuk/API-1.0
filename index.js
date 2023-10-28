@@ -1,54 +1,81 @@
 import http from "http";
-// import express from "express";
-// import cors from "cors";
-import { Server } from "socket.io";
+import express from "express";
 
 const port = 80;
+const app = express();
 
-const httpServer = http.createServer((req, res) => {
-  console.log("HTTP CONNECTION");
-  const headers = {
-    "Content-Type": "application/json, */*",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  };
-  res.writeHead(200, headers);
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   if (req.method === "OPTIONS") {
-    res.writeHead(204, headers);
+    res.status(200);
   }
-  res.end();
+  next();
 });
-const io = new Server({
-  optionsSuccessStatus: 204,
-  transports: ["polling"],
-  upgrade: false,
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-  handlePreflightRequest: (req, res) => {
-    res.writeHead(200, {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET,POST,PUT",
-      "Content-Type": "application/json",
-    });
-    res.end();
-  },
+app.get("/", (req, res) => {
+  console.log("New connection");
+  res.send("/");
 });
-io.listen(httpServer)
 
+const httpServer = http.createServer(app);
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
-  io.on("connection", (socket) => {
-    console.log(`socket connection: ${socket.id}`);
-    socket.handshake.headers.origin = "*";
-    // console.log(socket);
-    io.emit("socket send message", {
-      message: "success",
-    });
-  });
 });
+
+
+
+// import http from "http";
+// // import express from "express";
+// // import cors from "cors";
+// import { Server } from "socket.io";
+
+// const port = 80;
+
+// const httpServer = http.createServer((req, res) => {
+//   console.log("HTTP CONNECTION");
+//   const headers = {
+//     "Content-Type": "application/json, */*",
+//     "Access-Control-Allow-Origin": "*",
+//     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+//   };
+//   res.writeHead(200, headers);
+//   if (req.method === "OPTIONS") {
+//     res.writeHead(204, headers);
+//   }
+//   res.end();
+// });
+// const io = new Server({
+//   optionsSuccessStatus: 204,
+//   transports: ["polling"],
+//   upgrade: false,
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+//   handlePreflightRequest: (req, res) => {
+//     res.writeHead(200, {
+//       "Access-Control-Allow-Origin": "*",
+//       "Access-Control-Allow-Methods": "GET,POST,PUT",
+//       "Content-Type": "application/json",
+//     });
+//     res.end();
+//   },
+// });
+// io.listen(httpServer)
+
+
+// httpServer.listen(port, () => {
+//   console.log(`SERVER_PORT: ${port}`);
+//   io.on("connection", (socket) => {
+//     console.log(`socket connection: ${socket.id}`);
+//     socket.handshake.headers.origin = "*";
+//     // console.log(socket);
+//     io.emit("socket send message", {
+//       message: "success",
+//     });
+//   });
+// });
 
 // import express from "express";
 // import mongoose from "mongoose";
