@@ -1,27 +1,80 @@
 import http from "http";
-import express from "express";
+// import express from "express";
+// import cors from "cors";
+import { Server } from "socket.io";
 
 const port = 80;
-const app = express();
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+const httpServer = http.createServer((req, res) => {
+  console.log("HTTP CONNECTION");
+  const headers = {
+    "Content-Type": "application/json, */*",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  };
+  res.writeHead(200, headers);
   if (req.method === "OPTIONS") {
-    res.status(200);
+    res.writeHead(204, headers);
   }
-  next();
-});
-app.get("/", (req, res) => {
-  console.log("New connection");
-  res.send("/");
+  if (req.method === "GET") {
+    res.writeHead(204, headers);
+  }
+  if (req.method === "POST") {
+    res.writeHead(204, headers);
+  }
+  res.end();
 });
 
-const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  optionsSuccessStatus: 204,
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+// io.set("transports", ["websocket"]);
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
+
+  io.on("connection", (socket) => {
+    console.log(`socket connection: ${socket.id}`);
+    socket.handshake.headers.origin = "*";
+    // console.log(socket);
+    io.emit("socket send message", {
+      message: "success",
+    });
+  });
 });
+
+
+
+
+
+// import http from "http";
+// import express from "express";
+
+// const port = 80;
+// const app = express();
+
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+//   if (req.method === "OPTIONS") {
+//     res.status(200);
+//   }
+//   next();
+// });
+// app.get("/", (req, res) => {
+//   console.log("New connection");
+//   res.send("/");
+// });
+
+// const httpServer = http.createServer(app);
+
+// httpServer.listen(port, () => {
+//   console.log(`SERVER_PORT: ${port}`);
+// });
 
 
 
