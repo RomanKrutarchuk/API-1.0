@@ -6,7 +6,6 @@ import { Server } from "socket.io";
 const port = 3080;
 
 const httpServer = http.createServer();
-const succesMessage = { serverResponse: "cuccess" };
 
 httpServer.on("request", (req, res) => {
   console.log("HTTP CONNECTION");
@@ -14,8 +13,8 @@ httpServer.on("request", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "*");
   res.statusCode = 200;
-  if (request.url === "/") {
-    res.write(JSON.stringify(succesMessage));
+  if (req.url === "/") {
+    res.write("api-1.0 successeful connected");
   }
   res.end();
 });
