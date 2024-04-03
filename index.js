@@ -3,27 +3,36 @@ import http from "http";
 // import cors from "cors";
 import { Server } from "socket.io";
 
-const port = 80;
+const port = 3000;
 
-const httpServer = http.createServer((req, res) => {
+const httpServer = http.createServer();
+httpServer.on("request", (req, res) => {
   console.log("HTTP CONNECTION");
-  const headers = {
-    "Content-Type": "application/json, */*",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  };
-  res.writeHead(200, headers);
-  if (req.method === "OPTIONS") {
-    res.writeHead(204, headers);
-  }
-  if (req.method === "GET") {
-    res.writeHead(204, headers);
-  }
-  if (req.method === "POST") {
-    res.writeHead(204, headers);
-  }
-  res.end();
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods","*")
+  res.statusCode = 200;
+  res.end("connected");
 });
+// const httpServer = http.createServer((req, res) => {
+//   console.log("HTTP CONNECTION");
+//   const headers = {
+//     "Content-Type": "application/json, */*",
+//     "Access-Control-Allow-Origin": "*",
+//     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+//   };
+//   res.writeHead(200, headers);
+//   if (req.method === "OPTIONS") {
+//     res.writeHead(204, headers);
+//   }
+//   if (req.method === "GET") {
+//     res.writeHead(204, headers);
+//   }
+//   if (req.method === "POST") {
+//     res.writeHead(204, headers);
+//   }
+//   res.end();
+// });
 
 const io = new Server(httpServer, {
   optionsSuccessStatus: 204,
