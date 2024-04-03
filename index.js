@@ -14,7 +14,9 @@ httpServer.on("request", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "*");
   res.statusCode = 200;
-  res.write(JSON.stringify(succesMessage));
+  if (request.url === "/") {
+    res.write(JSON.stringify(succesMessage));
+  }
   res.end();
 });
 // const httpServer = http.createServer((req, res) => {
