@@ -3,16 +3,19 @@ import http from "http";
 // import cors from "cors";
 import { Server } from "socket.io";
 
-const port = 3000;
+const port = 3080;
 
 const httpServer = http.createServer();
+const succesMessage = { serverResponse: "cuccess" };
+
 httpServer.on("request", (req, res) => {
   console.log("HTTP CONNECTION");
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods","*")
+  res.setHeader("Access-Control-Allow-Methods", "*");
   res.statusCode = 200;
-  res.end("connected");
+  res.write(JSON.stringify(succesMessage));
+  res.end();
 });
 // const httpServer = http.createServer((req, res) => {
 //   console.log("HTTP CONNECTION");
@@ -56,10 +59,6 @@ httpServer.listen(port, () => {
   });
 });
 
-
-
-
-
 // import http from "http";
 // import express from "express";
 
@@ -84,8 +83,6 @@ httpServer.listen(port, () => {
 // httpServer.listen(port, () => {
 //   console.log(`SERVER_PORT: ${port}`);
 // });
-
-
 
 // import http from "http";
 // // import express from "express";
@@ -125,7 +122,6 @@ httpServer.listen(port, () => {
 //   },
 // });
 // io.listen(httpServer)
-
 
 // httpServer.listen(port, () => {
 //   console.log(`SERVER_PORT: ${port}`);
