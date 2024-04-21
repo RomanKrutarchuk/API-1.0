@@ -1,8 +1,6 @@
 import http from "http";
-// import express from "express";
-// import cors from "cors";
 import { Server } from "socket.io";
-
+import socketEvents from "./socket.js";
 const port = 3080;
 
 const httpServer = http.createServer();
@@ -16,27 +14,21 @@ httpServer.on("request", (req, res) => {
   if (req.url === "/") {
     res.write("api-1.0 successeful connected");
   }
+  if (req.url === "/userProfileDefault") {
+    const userProfileDefault = {
+      isLoggined: false,
+      email: null,
+      name: null,
+      picture: null,
+      isOnline: false,
+      data: null,
+      id: null,
+    };
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(userProfileDefault));
+  }
   res.end();
 });
-// const httpServer = http.createServer((req, res) => {
-//   console.log("HTTP CONNECTION");
-//   const headers = {
-//     "Content-Type": "application/json, */*",
-//     "Access-Control-Allow-Origin": "*",
-//     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-//   };
-//   res.writeHead(200, headers);
-//   if (req.method === "OPTIONS") {
-//     res.writeHead(204, headers);
-//   }
-//   if (req.method === "GET") {
-//     res.writeHead(204, headers);
-//   }
-//   if (req.method === "POST") {
-//     res.writeHead(204, headers);
-//   }
-//   res.end();
-// });
 
 const io = new Server(httpServer, {
   optionsSuccessStatus: 204,
@@ -45,19 +37,11 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"],
   },
 });
-// io.set("transports", ["websocket"]);
+let connections = []
+socketEvents(io, connections);
 
 httpServer.listen(port, () => {
   console.log(`SERVER_PORT: ${port}`);
-
-  io.on("connection", (socket) => {
-    console.log(`socket connection: ${socket.id}`);
-    socket.handshake.headers.origin = "*";
-    // console.log(socket);
-    io.emit("socket send message", {
-      message: "success",
-    });
-  });
 });
 
 // import http from "http";
