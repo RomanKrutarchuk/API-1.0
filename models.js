@@ -1,29 +1,33 @@
 import mongoose from "mongoose";
-
-const commentsSchema = new mongoose.Schema({
-  author: { type: String, require: true },
-  authorEmail: { type: String, require: true },
-  text: { type: String, require: true },
-});
 const usersSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    require: true,
-  },
   email: {
     type: String,
     require: true,
   },
-  password: {
+  name: {
     type: String,
     require: true,
   },
+  picture: {
+    type: String,
+    require: true,
+  },
+  doc: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: function () {
+      return new mongoose.Types.ObjectId();
+    },
+  },
+  userID: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: function () {
+      return new mongoose.Types.ObjectId();
+    },
+  },
 });
 
-const Comments = mongoose.model("comments", commentsSchema);
 const Users = mongoose.model("users", usersSchema);
 
 export default {
-  Comments,
   Users,
 };
