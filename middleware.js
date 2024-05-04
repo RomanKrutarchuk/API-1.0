@@ -44,16 +44,30 @@ export default function (app) {
   });
   app.post("/auth", async (req, res) => {
     const body = JSON.parse(req.body);
-    // console.log(body.token);
-    const token = body.token;
-    const googleData = await verify(token).catch(console.error);
-    const user = await findUser(googleData)
-    console.log({createdUser:user});
-    res.setHeader("Content-Type", "application/json");
-    res.send(JSON.stringify(user))
+    console.log(body);
+    if (body.token) {
+      const token = body.token;
+      const googleData = await verify(token).catch(console.error);
+      const user = await findUser(googleData)
+      res.setHeader("Content-Type", "application/json");
+      res.send(JSON.stringify(user))
+    }
+    if (body.userID) {
+      const user = await findUser(false, body.userID)
+      res.setHeader("Content-Type", "application/json");
+      res.send(JSON.stringify(user))
+    }
   });
 }
-async function findUser(googleData) {
+async function findUser(googleData, userID) {
+  if (!googleData && userID != null) {
+    return await Users.find({ userID: userID }).then((users) => {
+      // console.log(users);
+      const user = users[0]
+      console.log({ findUserByID: user });
+      return user
+    })
+  }
   return await Users.find({
     name: googleData.name,
     email: googleData.email,
@@ -63,6 +77,7 @@ async function findUser(googleData) {
       return user;
     }
     const user = users.find((user) => user.email === user.email);
+    console.log({ findUser: user });
     return user;
   });
 }
