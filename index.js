@@ -3,7 +3,6 @@ import http from "http";
 import { Server } from "socket.io";
 import socketEvents from "./socket.js";
 import middleware from "./middleware.js";
-import mongoose from "mongoose";
 
 const port = 3080;
 const app = express();
