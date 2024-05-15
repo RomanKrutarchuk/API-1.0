@@ -52,28 +52,31 @@ export default function (app) {
     const body = JSON.parse(req.body);
     // console.log(body);
     if (body.token) {
+      // console.log("token");
       const token = body.token;
       const googleData = await verify(token).catch(console.error);
       const user = await findUser(googleData)
       res.setHeader("Content-Type", "application/json");
       res.send(JSON.stringify(user))
     }
-    if (body.userID) {
-      const user = await findUser(false, body.userID)
+    if (body.id) {
+      // console.log("id");
+      const user = await findUser(false, body.id)
       res.setHeader("Content-Type", "application/json");
       res.send(JSON.stringify(user))
     }
   });
   app.post("/getUserData", async (req, res) => {
     const body = JSON.parse(req.body);
-    const user = await findUser(false, body.userID)
+    console.log(body.id);
+    const user = await findUser(false, body.id)
     res.setHeader("Content-Type", "application/json");
     res.send(JSON.stringify(user))
   })
 }
-async function findUser(googleData, userID) {
-  if (!googleData && userID != null) {
-    return await Users.find({ userID: userID }).then((users) => {
+async function findUser(googleData, id) {
+  if (!googleData && id != null) {
+    return await Users.find({ id }).then((users) => {
       // console.log(users);
       const user = users[0]
       // console.log({ findUserByID: user });

@@ -18,7 +18,7 @@ const usersSchema = new mongoose.Schema({
       return new mongoose.Types.ObjectId();
     },
   },
-  userID: {
+  id: {
     type: mongoose.Schema.Types.ObjectId,
     default: function () {
       return new mongoose.Types.ObjectId();
