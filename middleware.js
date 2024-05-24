@@ -54,7 +54,7 @@ export default function (app) {
     if (body.token) {
       const token = body.token;
       const googleData = await verify(token).catch(console.error);
-      const user = await findUser({ googleData })
+      const user = await findUser({ googleData: googleData })
       console.log("/auth.user.googleData");
       res.setHeader("Content-Type", "application/json");
       res.send(JSON.stringify(user))
@@ -96,7 +96,7 @@ async function findUser(value) {
       email: value.googleData.email,
     }).then((users) => {
       if (users.length === 0) {
-        const user = createUser(googleData);
+        const user = createUser(value.googleData);
         return user;
       }
       const user = users.find((user) => user.email === user.email);
